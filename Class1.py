@@ -119,17 +119,17 @@ class DataManager:
 
         file_nm = self.usr_nm
         keywrd = self.passwrd
-        file_path = Path(f"Account_Data/{file_nm}.bin")  # encrypted file
+        file_path = Path(f"Account_Data/{file_nm}.bin")
         key_path = Path("key.json")
 
-        # --- Load keys.json (guaranteed to exist) ---
+        # --- Load keys.json ---
         with open(key_path, "r") as f:
             try:
                 key_data = json.load(f)
             except json.JSONDecodeError:
                 key_data = {}
 
-        # --- Get or create this user's key ---
+        # --- Get or create encryption key ---
         if keywrd in key_data:
             key = key_data[keywrd].encode()
         else:
@@ -144,15 +144,15 @@ class DataManager:
         json_string = json.dumps(self.fin_struct)
         json_bytes = json_string.encode()
 
-        # --- Encrypt JSON ---
-        cipher_data = cipher.encrypt(json_bytes)
+        # --- Encrypt ---
+        encrypted = cipher.encrypt(json_bytes)
 
-        # --- Save encrypted data in binary mode ---
+        # --- Write encrypted data ---
         file_path.parent.mkdir(parents=True, exist_ok=True)
         with open(file_path, "wb") as f:
-            f.write(cipher_data)
+            f.write(encrypted)
 
-        print("Encrypted data saved successfully.")
+        print("Saved encrypted data.")
 
 
 if __name__=="__main__":
@@ -166,7 +166,7 @@ if __name__=="__main__":
     fin_struct = DatManage.struct_integrate(in_ent_2)
     fin_struct = DatManage.struct_integrate(in_ent_3)
 
-    DatManage.dat_save(in_ent_1)
+    DatManage.dat_save()
 
     dm = DataManager("Person1", "Password1234", "old")
     data = dm.dat_retrieve()
