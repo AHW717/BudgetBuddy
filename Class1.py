@@ -115,7 +115,7 @@ class DataManager:
                 self.fin_struct[year][month][itm_type][category] = {}
         (self.fin_struct[year][month][itm_type][category]).append(money_list)
 
-    def dat_save(self, user_input):
+    def dat_save(self):
 
         file_nm = self.usr_nm
         keywrd = self.passwrd
